@@ -1,4 +1,4 @@
-package jenkins.plugins.http_request.auth;
+package jenkins.plugins.http_request_params.auth;
 
 import hudson.Extension;
 import hudson.model.AbstractDescribableImpl;
@@ -6,7 +6,7 @@ import hudson.model.Descriptor;
 import hudson.util.FormValidation;
 import java.io.PrintStream;
 import jenkins.model.Jenkins;
-import jenkins.plugins.http_request.HttpRequest;
+import jenkins.plugins.http_request_params.HttpRequest;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.methods.HttpRequestBase;

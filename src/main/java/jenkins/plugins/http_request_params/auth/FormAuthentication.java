@@ -1,4 +1,4 @@
-package jenkins.plugins.http_request.auth;
+package jenkins.plugins.http_request_params.auth;
 
 import hudson.Extension;
 import hudson.model.AbstractDescribableImpl;
@@ -10,9 +10,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import jenkins.model.Jenkins;
-import jenkins.plugins.http_request.HttpRequest;
-import jenkins.plugins.http_request.util.HttpClientUtil;
-import jenkins.plugins.http_request.util.RequestAction;
+import jenkins.plugins.http_request_params.HttpRequest;
+import jenkins.plugins.http_request_params.util.HttpClientUtil;
+import jenkins.plugins.http_request_params.util.RequestAction;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.impl.client.DefaultHttpClient;

@@ -7,6 +7,10 @@
         <f:select />
     </f:entry>
     
+    <f:entry title="Parameters" field="parameters">
+        <f:textarea />
+    </f:entry>
+    
     <f:entry field="authentication" title="Authenticate">
         <f:select />
     </f:entry>

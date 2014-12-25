@@ -1,4 +1,4 @@
-package jenkins.plugins.http_request.util;
+package jenkins.plugins.http_request_params.util;
 
 import hudson.util.FormValidation;
 import java.net.MalformedURLException;

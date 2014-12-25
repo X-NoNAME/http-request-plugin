@@ -7,10 +7,10 @@
         <version>1.509.4</version>
     </parent>
     
-    <artifactId>http_request</artifactId>
-    <version>1.8.7-SNAPSHOT</version>
+    <artifactId>http_request_params</artifactId>
+    <version>1.8.7-PARAMS</version>
     <packaging>hpi</packaging>
-    <name>HTTP Request Plugin</name>
+    <name>HTTP Request Plugin with params</name>
     <url>http://wiki.jenkins-ci.org/display/JENKINS/HTTP+Request+Plugin</url>
 
     <properties>

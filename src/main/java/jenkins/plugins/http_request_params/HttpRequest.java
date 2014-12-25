@@ -1,4 +1,4 @@
-package jenkins.plugins.http_request;
+package jenkins.plugins.http_request_params;
 
 import hudson.EnvVars;
 import hudson.Extension;
@@ -12,12 +12,12 @@ import hudson.tasks.Builder;
 import hudson.util.FormValidation;
 import hudson.util.ListBoxModel;
 import hudson.util.VariableResolver;
-import jenkins.plugins.http_request.auth.Authenticator;
-import jenkins.plugins.http_request.auth.BasicDigestAuthentication;
-import jenkins.plugins.http_request.auth.FormAuthentication;
-import jenkins.plugins.http_request.util.HttpClientUtil;
-import jenkins.plugins.http_request.util.NameValuePair;
-import jenkins.plugins.http_request.util.RequestAction;
+import jenkins.plugins.http_request_params.auth.Authenticator;
+import jenkins.plugins.http_request_params.auth.BasicDigestAuthentication;
+import jenkins.plugins.http_request_params.auth.FormAuthentication;
+import jenkins.plugins.http_request_params.util.HttpClientUtil;
+import jenkins.plugins.http_request_params.util.NameValuePair;
+import jenkins.plugins.http_request_params.util.RequestAction;
 import net.sf.json.JSONObject;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpRequestBase;
@@ -34,6 +34,7 @@ import java.io.PrintStream;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -44,15 +45,17 @@ public class HttpRequest extends Builder {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(HttpRequest.class);
     private final String url;
+    private final String parameters;
     private final HttpMode httpMode;
     private final String authentication;
     private final Boolean returnCodeBuildRelevant;
     private final Boolean logResponseBody;
 
     @DataBoundConstructor
-    public HttpRequest(String url, String httpMode, String authentication, String returnCodeBuildRelevant, String logResponseBody)
+    public HttpRequest(String url, String httpMode,String parameters, String authentication, String returnCodeBuildRelevant, String logResponseBody)
             throws URISyntaxException {
         this.url = url;
+        this.parameters = parameters;
         this.httpMode = Util.fixEmpty(httpMode) == null ? null : HttpMode.valueOf(httpMode);
         this.authentication = Util.fixEmpty(authentication);
         if (returnCodeBuildRelevant != null && returnCodeBuildRelevant.trim().length() > 0) {
@@ -77,6 +80,10 @@ public class HttpRequest extends Builder {
         return url;
     }
 
+    public String getParameters() {
+        return parameters;
+    }
+        
     public HttpMode getHttpMode() {
         return httpMode;
     }
@@ -148,8 +155,14 @@ public class HttpRequest extends Builder {
             EnvVars envVars) {
         final VariableResolver<String> vars = build.getBuildVariableResolver();
 
+        Map<String, String> map = getMapFrompParams();
+        
+        if(map.isEmpty()){
+            map.putAll(build.getBuildVariables());
+        }
+        
         List<NameValuePair> l = new ArrayList<NameValuePair>();
-        for (Map.Entry<String, String> entry : build.getBuildVariables().entrySet()) {
+        for (Map.Entry<String, String> entry : map.entrySet()) {
             String value = evaluate(entry.getValue(), vars, envVars);
             logger.println("  " + entry.getKey() + " = " + value);
 
@@ -166,6 +179,30 @@ public class HttpRequest extends Builder {
     @Override
     public DescriptorImpl getDescriptor() {
         return (DescriptorImpl) super.getDescriptor();
+    }
+
+    private Map<String, String> getMapFrompParams() {
+        Map<String, String> retMap = new HashMap<String, String>();
+        if(parameters==null || parameters.trim().isEmpty() || !parameters.contains("=")) return null;
+        
+        String[] rows = parameters.split("\n");
+        for(String row:rows){
+            if(row.trim().isEmpty() || !row.trim().contains("=")) continue;
+            
+            String[] pairs = row.trim().split(";");
+            for(String pair:pairs){
+                String[] keyValue=pair.trim().split("=",2);
+                if(keyValue.length==0) continue;
+                
+                else if (keyValue.length==1){
+                    retMap.put(keyValue[0].trim(), "NULL");
+                }else {
+                    retMap.put(keyValue[0].trim(), keyValue[1].trim());
+                }
+            }
+        }
+        
+        return retMap;
     }
 
     @Extension
@@ -246,7 +283,7 @@ public class HttpRequest extends Builder {
 
         @Override
         public String getDisplayName() {
-            return "HTTP Request";
+            return "HTTP Request with params";
         }
 
         @Override

@@ -1,4 +1,4 @@
-package jenkins.plugins.http_request.util;
+package jenkins.plugins.http_request_params.util;
 
 import hudson.Extension;
 import hudson.model.AbstractDescribableImpl;
@@ -9,7 +9,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import jenkins.plugins.http_request.HttpMode;
+import jenkins.plugins.http_request_params.HttpMode;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.QueryParameter;
 

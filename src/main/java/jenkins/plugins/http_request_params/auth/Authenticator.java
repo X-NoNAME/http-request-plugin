@@ -1,4 +1,4 @@
-package jenkins.plugins.http_request.auth;
+package jenkins.plugins.http_request_params.auth;
 
 import java.io.IOException;
 import java.io.PrintStream;
