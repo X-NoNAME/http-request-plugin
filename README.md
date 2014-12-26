@@ -1,3 +1,5 @@
+Этот плагин , теперь, принимает на вход параметры - список параметров;
+
 This plugin does a HTTP/HTTPS request to a speficied URL with the build parameters automatically
 part of the payload as key/value pairs.
 
